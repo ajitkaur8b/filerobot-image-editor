@@ -33,6 +33,7 @@ const TextNode = ({
   letterSpacing,
   lineHeight,
   align,
+  mergTagName,
   ...otherProps
 }) => (
   <Text
@@ -93,6 +94,7 @@ TextNode.propTypes = {
   letterSpacing: PropTypes.number,
   lineHeight: PropTypes.number,
   align: PropTypes.string,
+  mergTagName: PropTypes.string,
 };
 
 export default TextNode;

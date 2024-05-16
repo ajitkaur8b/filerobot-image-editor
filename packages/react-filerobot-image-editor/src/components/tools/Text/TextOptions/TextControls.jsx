@@ -127,6 +127,17 @@ const TextControls = ({ text, saveText, children }) => {
       }
       t={t}
     >
+      <StyledFontSizeInput
+        className="FIE_text-size-option"
+        value={text.mergTagName || ''}
+        name="mergTagName"
+        onChange={changeTextProps}
+        inputMode="alphanumeric"
+        type="text"
+        size="sm"
+        placeholder={t('Variable name')}
+      />
+
       {Array.isArray(fonts) && fonts.length > 1 && (
         <StyledFontFamilySelect
           className="FIE_text-font-family-option"
