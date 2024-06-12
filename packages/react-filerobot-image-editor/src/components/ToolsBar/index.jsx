@@ -103,6 +103,7 @@ const ToolsBar = ({ isPhoneScreen }) => {
       </ToolsBarItemOptionsWrapper>
       {items && (
         <StyledToolsBarItems
+        style={{marginTop:"40px"}}
           className="FIE_tools-bar"
           isPhoneScreen={isPhoneScreen}
         >

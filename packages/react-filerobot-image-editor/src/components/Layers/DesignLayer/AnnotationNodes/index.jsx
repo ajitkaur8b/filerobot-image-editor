@@ -12,6 +12,7 @@ const AnnotationNodes = () => {
   return useMemo(
     () =>
       Object.values(annotations).map((annotation) => (
+        console.log('annotation', annotation),
         <MemoizedAnnotation
           key={annotation.id}
           annotation={annotation}

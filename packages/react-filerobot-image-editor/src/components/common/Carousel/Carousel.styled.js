@@ -10,14 +10,14 @@ const StyledCarouselWrapper = styled.div`
   touch-action: pan-y pinch-zoom;
 `;
 
-const StyledCarousel = styled.ul`
+const StyledCarousel = styled.div`
   padding: 0;
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
 `;
 
-const StyledCarouselItem = styled.li`
+const StyledCarouselItem = styled.div`
   padding: 4px;
   display: inline-block;
   list-style-type: none;

@@ -49,7 +49,7 @@ const NodesTransformer = () => {
   };
 
   const enableTextContentChangeOnDblClick = () => {
-    if (selections.length === 1 && selections[0].name() === TOOLS_IDS.TEXT) {
+    if (selections.length === 1 && (selections[0].name() === TOOLS_IDS.TEXT || selections[0].name() === TOOLS_IDS.MERGETAG)) {
       dispatch({
         type: ENABLE_TEXT_CONTENT_EDIT,
         payload: {
@@ -58,6 +58,8 @@ const NodesTransformer = () => {
       });
     }
   };
+
+  
 
   const enabledAnchors = useCloudimage
     ? ['top-left', 'bottom-left', 'top-right', 'bottom-right']

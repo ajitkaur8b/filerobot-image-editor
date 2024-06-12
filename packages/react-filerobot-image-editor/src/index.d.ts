@@ -29,11 +29,12 @@ declare const TOOLS = {
   ELLIPSE: 'Ellipse',
   POLYGON: 'Polygon',
   TEXT: 'Text',
+  MERGETAG: 'MergeTag',
   LINE: 'Line',
   IMAGE: 'Image',
   ARROW: 'Arrow',
   WATERMARK: 'Watermark',
-  PEN: 'Pen',
+  // PEN: 'Pen',
   RESIZE: 'Resize',
 } as const;
 
@@ -252,20 +253,27 @@ export interface FilerobotImageEditorConfig {
       reRenderCanvasFn: () => void,
     ) => void;
   };
+  MergeTag?: textAnnotation & {
+    fonts?: (string | { label: string; value: string })[];
+    onFontChange?: (
+      newFontFamily: string,
+      reRenderCanvasFn: () => void,
+    ) => void;
+  };
   // [TOOLS_IDS.IMAGE]
   Image?: imageAnnotation;
   // [TOOLS_IDS.ELLIPSE]
-  Ellipse?: annotationsCommon;
+  // Ellipse?: annotationsCommon;
   // [TOOLS_IDS.RECT]
   Rect?: rectAnnotation;
   // [TOOLS_IDS.POLYGON]
-  Polygon?: polygonAnnotation;
+  // Polygon?: polygonAnnotation;
   // [TOOLS_IDS.PEN]
-  Pen?: penAnnotation;
+  // Pen?: penAnnotation;
   // [TOOLS_IDS.LINE]: {
-  Line?: lineAnnotation;
+  // Line?: lineAnnotation;
   // [TOOLS_IDS.ARROW]: {
-  Arrow?: arrowAnnotation;
+  // Arrow?: arrowAnnotation;
   // [TOOLS_IDS.ROTATE]:
   Rotate?: rotateAnnotation;
   // [TOOLS_IDS.WATERMARK]

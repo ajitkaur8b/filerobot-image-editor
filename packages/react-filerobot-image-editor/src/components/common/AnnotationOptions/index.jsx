@@ -8,12 +8,14 @@ import Transparency from '@scaleflex/icons/transparency';
 import Shadow from '@scaleflex/icons/shadow';
 import Stroke from '@scaleflex/icons/stroke';
 import Position from '@scaleflex/icons/position';
+import { LayerOrder } from '@scaleflex/icons';
 
 /** Internal Dependencies */
 import OpacityField from './OpacityField';
 import StrokeFields from './StrokeFields';
 import ShadowFields from './ShadowFields';
 import PositionFields from './PositionFields';
+import Layers from './Layers';
 import {
   StyledOptionPopupContent,
   StyledOptions,
@@ -47,6 +49,11 @@ const AnnotationOptions = ({
   const options = useMemo(
     () => [
       ...morePoppableOptionsPrepended,
+      ...(!useCloudimage
+        ? [
+          { titleKey: 'Layers', name: POPPABLE_OPTIONS.LAYERS, Icon: LayerOrder },
+        ]
+        : []),
       {
         titleKey: 'opacity',
         name: POPPABLE_OPTIONS.OPACITY,
@@ -54,16 +61,16 @@ const AnnotationOptions = ({
       },
       ...(!useCloudimage
         ? [
-            { titleKey: 'stroke', name: POPPABLE_OPTIONS.STROKE, Icon: Stroke },
-            { titleKey: 'shadow', name: POPPABLE_OPTIONS.SHADOW, Icon: Shadow },
-          ]
+          { titleKey: 'stroke', name: POPPABLE_OPTIONS.STROKE, Icon: Stroke },
+          { titleKey: 'shadow', name: POPPABLE_OPTIONS.SHADOW, Icon: Shadow },
+        ]
         : []),
       !hidePositionField
         ? {
-            titleKey: 'position',
-            name: POPPABLE_OPTIONS.POSITION,
-            Icon: Position,
-          }
+          titleKey: 'position',
+          name: POPPABLE_OPTIONS.POSITION,
+          Icon: Position,
+        }
         : undefined,
     ],
     [morePoppableOptionsPrepended],
@@ -76,11 +83,11 @@ const AnnotationOptions = ({
       [POPPABLE_OPTIONS.STROKE]: StrokeFields,
       [POPPABLE_OPTIONS.SHADOW]: ShadowFields,
       [POPPABLE_OPTIONS.POSITION]: PositionFields,
+      [POPPABLE_OPTIONS.LAYERS]: Layers,
       ...morePoppableOptionsAppended,
     }),
     [moreOptionsPopupComponentsObj],
   );
-
   const toggleOptionPopup = useCallback((e, targetOptionName) => {
     const targetAnchorEl = e?.currentTarget;
     setAnchorEl(targetAnchorEl);
@@ -111,59 +118,75 @@ const AnnotationOptions = ({
   );
 
   return (
-    <StyledOptions
-      className={`FIE_annotations-options${className ? ` ${className}` : ''}`}
-      isPhoneScreen={isPhoneScreen}
-    >
-      {!hideFillOption && (
-        <ColorInput
-          color={annotation.fill}
-          onChange={changeAnnotationFill}
-          colorFor="fill"
-        />
-      )}
-
-      {children}
-
-      <StyledOptionsWrapper>
-        {options.map(
-          (option) =>
-            option && (
-              <StyledIconWrapper
-                className="FIE_annotation-option-triggerer"
-                key={option.name}
-                title={t(option.titleKey)}
-                onClick={(e) => toggleOptionPopup(e, option.name)}
-                active={currentOption === option.name}
-              >
-                <option.Icon size={20} />
-              </StyledIconWrapper>
-            ),
+    <>
+      <StyledOptions
+        className={`FIE_annotations-options${className ? ` ${className}` : ''}`}
+        isPhoneScreen={isPhoneScreen}
+      >
+        {!hideFillOption && (
+          <ColorInput
+            color={annotation.fill}
+            onChange={changeAnnotationFill}
+            colorFor="fill"
+          />
         )}
-      </StyledOptionsWrapper>
 
-      {OptionPopupComponent && (
-        <Menu
-          className="FIE_annotation-option-popup"
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={toggleOptionPopup}
-          position="top"
-        >
-          <StyledOptionPopupContent>
-            {currentOption === POPPABLE_OPTIONS.POSITION ? (
-              renderPositionFields()
-            ) : (
-              <OptionPopupComponent
-                annotation={annotation}
-                updateAnnotation={updateAnnotation}
-                {...rest}
-              />
-            )}
-          </StyledOptionPopupContent>
-        </Menu>
-      )}
-    </StyledOptions>
+        {children}
+
+
+        {OptionPopupComponent && (
+          <Menu
+            className="FIE_annotation-option-popup"
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={toggleOptionPopup}
+            position="top"
+          >
+            <StyledOptionPopupContent>
+              {currentOption === POPPABLE_OPTIONS.POSITION ? (
+                renderPositionFields()
+
+              ) : (
+                <OptionPopupComponent
+                  annotation={annotation}
+                  updateAnnotation={updateAnnotation}
+                  {...rest}
+                />
+              )}
+            </StyledOptionPopupContent>
+          </Menu>
+        )}
+      </StyledOptions>
+
+      <StyledOptions
+        style={{ margin: '-7px 7px' }}
+        className={`FIE_annotations-options${className ? ` ${className}` : ''}`}
+        isPhoneScreen={isPhoneScreen}
+      >
+
+        <StyledOptionsWrapper>
+          {options.map(
+            (option) =>
+              option && (
+                <StyledIconWrapper
+                  className="FIE_annotation-option-triggerer"
+                  key={option.name}
+                  title={t(option.titleKey)}
+                  onClick={(e) => toggleOptionPopup(e, option.name)}
+                  active={currentOption === option.name}
+                >
+                  <div style={{textAlign:"center"}}>
+                    <option.Icon size={23} /> <br />
+                    <span style={{ fontSize: "10px" }}>{option.name === "text-alignment"? "Align" :
+                    option.name ==="text-spacings" ? "Spacing" :option.name
+                    }</span>
+                  </div>
+                </StyledIconWrapper>
+              ),
+          )}
+        </StyledOptionsWrapper>
+      </StyledOptions>
+    </>
   );
 };
 

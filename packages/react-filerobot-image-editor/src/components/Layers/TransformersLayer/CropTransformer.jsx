@@ -15,6 +15,7 @@ import {
 } from 'utils/constants';
 import { boundDragging, boundResizing } from './TransformersLayer.utils';
 import TextNode from '../DesignLayer/AnnotationNodes/TextNode';
+import MergeTag from '../DesignLayer/AnnotationNodes/MergeTag';
 
 let isFirstRenderCropUpdated = false;
 const noEffectTextDimensions = {
@@ -278,6 +279,29 @@ const CropTransformer = () => {
       )}
       {crop.noEffect && (
         <TextNode
+          name="Text"
+          id="no-preview-text-node"
+          text={t('cropItemNoEffect')}
+          x={shownImageDimensions.width / 2 - noEffectTextDimensions.width / 2}
+          y={
+            shownImageDimensions.height / 2 - noEffectTextDimensions.height / 2
+          }
+          fontSize={20}
+          fill="#ffffff"
+          stroke="#ff0000"
+          strokeWidth={0.2}
+          shadowColor="#ff0000"
+          shadowBlur={10}
+          annotationEvents={{}}
+          align="center"
+          width={noEffectTextDimensions.width}
+          height={noEffectTextDimensions.height}
+        />
+      )}
+
+
+{crop.noEffect && (
+        <MergeTag
           name="Text"
           id="no-preview-text-node"
           text={t('cropItemNoEffect')}

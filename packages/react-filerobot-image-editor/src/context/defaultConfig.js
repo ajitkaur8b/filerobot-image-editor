@@ -37,6 +37,22 @@ export default {
     fontStyle: 'normal', // 'bold', 'italic', 'bold italic'
     onFontChange: undefined,
   },
+  [TOOLS_IDS.MERGETAG]: {
+    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    fontFamily: 'Arial',
+    fonts: [
+      { label: 'Arial', value: 'Arial' },
+      'Tahoma',
+      'Sans-serif',
+      { label: 'Comic Sans', value: 'Comic-sans' },
+    ],
+    fontSize: 14,
+    letterSpacing: 0,
+    lineHeight: 1,
+    align: 'left', // left, center, right
+    fontStyle: 'normal', // 'bold', 'italic', 'bold italic'
+    onFontChange: undefined,
+  },
   [TOOLS_IDS.IMAGE]: {
     fill: undefined,
     disableUpload: false,

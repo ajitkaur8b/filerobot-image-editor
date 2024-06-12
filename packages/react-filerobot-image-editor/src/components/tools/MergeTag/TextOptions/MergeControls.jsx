@@ -20,7 +20,7 @@ import {
 import {
   textOptionsPopupComponents,
   TEXT_POPPABLE_OPTIONS,
-} from './TextOptions.constants';
+} from './MergeOptions.constants';
 import {
   activateTextChange,
   deactivateTextChange,
@@ -30,7 +30,7 @@ const TextControls = ({ text, saveText, children }) => {
   const { dispatch, textIdOfEditableContent, designLayer, t, config } =
     useStore();
   const { useCloudimage } = config;
-  const { fonts = [], onFontChange } = config[TOOLS_IDS.TEXT];
+  const { fonts = [], onFontChange } = config[TOOLS_IDS.MERGETAG];
 
   const changeTextProps = useCallback(
     (e) => {
@@ -127,6 +127,17 @@ const TextControls = ({ text, saveText, children }) => {
       }
       t={t}
     >
+      
+      <StyledFontSizeInput
+        className="FIE_text-size-option"
+        value={text.mergTagName || ''}
+        name="mergTagName"
+        onChange={changeTextProps}
+        inputMode="alphanumeric"
+        type="text"
+        size="sm"
+        placeholder={t('Variable name')}
+      />
       {Array.isArray(fonts) && fonts.length > 1 && (
         <StyledFontFamilySelect
           className="FIE_text-font-family-option"

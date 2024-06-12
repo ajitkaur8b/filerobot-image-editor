@@ -49,9 +49,10 @@ const previewThenCallAnnotationAdding = (
   const previewAnnotation = (preparedAnnotation) => {
     shownAnnotationPreview = getNewAnnotationPreview(preparedAnnotation);
     previewGroup.add(shownAnnotationPreview);
-    if (preparedAnnotation.name === TOOLS_IDS.TEXT) {
+    if (preparedAnnotation.name === TOOLS_IDS.TEXT || preparedAnnotation.name === TOOLS_IDS.MERGETAG) {
       wrapTextBoundsPreviewByRect(preparedAnnotation);
     }
+    
     latestAnnotationProps = preparedAnnotation;
   };
 

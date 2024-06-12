@@ -311,6 +311,17 @@ const config = {
     //   }
     // },
   },
+  [TOOLS.MERGETAG]: {
+    text: 'Mergetag...',
+    //   fonts: ['Arial', 'another', { label: 'Tahoma', value: 'Tahoma' }, 'hey-there'], // must be loaded in the website or the user have them on his system
+    //   fontFamily: 'test',
+    // onFontChange: (newFontFamily, reRenderCanvasFn) => {
+    //   if (newFontFamily.toLowerCase() === 'sans-serif') {
+    //     //  Load sans-serif font.
+    //     reRenderCanvasFn();
+    //   }
+    // },
+  },
   // onBeforeSave: (imageFileInfo) => {
   //   console.log('info', imageFileInfo);
   //   return false;

@@ -6,7 +6,7 @@ import { Text } from 'react-konva';
 /** Internal Dependencies */
 import nodesCommonPropTypes from '../nodesCommonPropTypes';
 
-const TextNode = ({
+const MergeTag = ({
   id,
   name,
   text,
@@ -33,7 +33,7 @@ const TextNode = ({
   letterSpacing,
   lineHeight,
   align,
-  verticalAlign,
+  mergTagName,
   ...otherProps
 }) => (
   <Text
@@ -58,7 +58,6 @@ const TextNode = ({
     letterSpacing={letterSpacing}
     lineHeight={lineHeight}
     align={align}
-    verticalAlign={verticalAlign}
     x={x}
     y={y}
     width={width}
@@ -68,7 +67,7 @@ const TextNode = ({
   />
 );
 
-TextNode.defaultProps = {
+MergeTag.defaultProps = {
   ...nodesCommonPropTypes.defaults,
   text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur imperdiet tortor quis odio facilisis, id aliquet nulla facilisis. Etiam tincidunt tempor odio nec placerat.',
   fontFamily: 'Arial',
@@ -79,10 +78,9 @@ TextNode.defaultProps = {
   letterSpacing: undefined,
   lineHeight: undefined,
   align: 'left',
-  color: '#000',
 };
 
-TextNode.propTypes = {
+MergeTag.propTypes = {
   ...nodesCommonPropTypes.definitions,
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
@@ -96,6 +94,7 @@ TextNode.propTypes = {
   letterSpacing: PropTypes.number,
   lineHeight: PropTypes.number,
   align: PropTypes.string,
+  mergTagName: PropTypes.string,
 };
 
-export default TextNode;
+export default MergeTag;

@@ -10,6 +10,7 @@ import { Blur, BlurOptions } from './Blur';
 import { Warmth, WarmthOptions } from './Warmth';
 import { Filters } from './Filters';
 import { TextButton, TextOptions } from './Text';
+import { MergeButton, MergeOptions } from './MergeTag';
 import { ImageButton, ImageOptions } from './Image';
 import { RectButton, RectOptions } from './Rect';
 import { EllipseButton, EllipseOptions } from './Ellipse';
@@ -78,6 +79,11 @@ export const TOOLS_ITEMS = {
     Item: TextButton,
     ItemOptions: TextOptions,
   },
+  [TOOLS_IDS.MERGETAG]: {
+    id: TOOLS_IDS.MERGETAG,
+    Item: MergeButton,
+    ItemOptions: MergeOptions,
+  },
   [TOOLS_IDS.IMAGE]: {
     id: TOOLS_IDS.IMAGE,
     Item: ImageButton,
@@ -88,31 +94,31 @@ export const TOOLS_ITEMS = {
     Item: RectButton,
     ItemOptions: RectOptions,
   },
-  [TOOLS_IDS.POLYGON]: {
-    id: TOOLS_IDS.POLYGON,
-    Item: PolygonButton,
-    ItemOptions: PolygonOptions,
-  },
-  [TOOLS_IDS.ELLIPSE]: {
-    id: TOOLS_IDS.ELLIPSE,
-    Item: EllipseButton,
-    ItemOptions: EllipseOptions,
-  },
-  [TOOLS_IDS.PEN]: {
-    id: TOOLS_IDS.PEN,
-    Item: PenButton,
-    ItemOptions: PenOptions,
-  },
-  [TOOLS_IDS.LINE]: {
-    id: TOOLS_IDS.LINE,
-    Item: LineButton,
-    ItemOptions: LineOptions,
-  },
-  [TOOLS_IDS.ARROW]: {
-    id: TOOLS_IDS.ARROW,
-    Item: ArrowButton,
-    ItemOptions: ArrowOptions,
-  },
+  // [TOOLS_IDS.POLYGON]: {
+  //   id: TOOLS_IDS.POLYGON,
+  //   Item: PolygonButton,
+  //   ItemOptions: PolygonOptions,
+  // },
+  // [TOOLS_IDS.ELLIPSE]: {
+  //   id: TOOLS_IDS.ELLIPSE,
+  //   Item: EllipseButton,
+  //   ItemOptions: EllipseOptions,
+  // },
+  // [TOOLS_IDS.PEN]: {
+  //   id: TOOLS_IDS.PEN,
+  //   Item: PenButton,
+  //   ItemOptions: PenOptions,
+  // },
+  // [TOOLS_IDS.LINE]: {
+  //   id: TOOLS_IDS.LINE,
+  //   Item: LineButton,
+  //   ItemOptions: LineOptions,
+  // },
+  // [TOOLS_IDS.ARROW]: {
+  //   id: TOOLS_IDS.ARROW,
+  //   Item: ArrowButton,
+  //   ItemOptions: ArrowOptions,
+  // },
   [TOOLS_IDS.RESIZE]: {
     id: TOOLS_IDS.RESIZE,
     Item: Resize,
@@ -137,13 +143,14 @@ export const TABS_TOOLS = {
   [TABS_IDS.WATERMARK]: [TOOLS_IDS.WATERMARK],
   [TABS_IDS.ANNOTATE]: [
     TOOLS_IDS.TEXT,
+    TOOLS_IDS.MERGETAG,
     TOOLS_IDS.IMAGE,
     TOOLS_IDS.RECT,
-    TOOLS_IDS.ELLIPSE,
-    TOOLS_IDS.POLYGON,
-    TOOLS_IDS.PEN,
-    TOOLS_IDS.LINE,
-    TOOLS_IDS.ARROW,
+    // TOOLS_IDS.ELLIPSE,
+    // TOOLS_IDS.POLYGON,
+    // TOOLS_IDS.PEN,
+    // TOOLS_IDS.LINE,
+    // TOOLS_IDS.ARROW,
   ],
   [TABS_IDS.RESIZE]: [TOOLS_IDS.RESIZE],
 };

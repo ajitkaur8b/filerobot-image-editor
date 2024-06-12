@@ -20,4 +20,5 @@ export const POPPABLE_OPTIONS = {
   STROKE: 'stroke',
   SHADOW: 'shadow',
   POSITION: 'position',
+  LAYERS: 'layers',
 };

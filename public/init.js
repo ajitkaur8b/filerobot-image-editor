@@ -48,6 +48,7 @@ const selectedTabs = [
   TABS.WATERMARK,
   TABS.ANNOTATE,
   TABS.RESIZE,
+  TABS.LAYERS,
 ];
 
 const IMG_EDITOR_TABS = {
@@ -57,6 +58,7 @@ const IMG_EDITOR_TABS = {
   watermark: TABS.WATERMARK,
   annotate: TABS.ANNOTATE,
   resize: TABS.RESIZE,
+  layers: TABS.LAYERS,
 };
 
 const pluginConfig = {

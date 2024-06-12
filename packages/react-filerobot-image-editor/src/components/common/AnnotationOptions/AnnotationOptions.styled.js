@@ -28,7 +28,7 @@ const StyledOptionsWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin-left: -4px;
-  gap: 4px;
+  gap: 25px;
 
   .FIE_annotation-option-triggerer {
     padding: 6px;

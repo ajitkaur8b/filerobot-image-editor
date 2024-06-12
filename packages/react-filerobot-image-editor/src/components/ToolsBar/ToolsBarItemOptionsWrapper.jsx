@@ -7,6 +7,7 @@ import { StyledToolsBarItemOptionsWrapper } from './ToolsBar.styled';
 
 const ToolsBarItemOptionsWrapper = ({ children, isPhoneScreen }) => (
   <StyledToolsBarItemOptionsWrapper
+  style={{ display: 'block' }}
     className="FIE_tool-options-wrapper"
     hasChildren={Boolean(children)}
     isPhoneScreen={isPhoneScreen}
