@@ -312,7 +312,7 @@ const config = {
     // },
   },
   [TOOLS.MERGETAG]: {
-    text: 'Mergetag...',
+    text: 'Default Value',
     //   fonts: ['Arial', 'another', { label: 'Tahoma', value: 'Tahoma' }, 'hey-there'], // must be loaded in the website or the user have them on his system
     //   fontFamily: 'test',
     // onFontChange: (newFontFamily, reRenderCanvasFn) => {

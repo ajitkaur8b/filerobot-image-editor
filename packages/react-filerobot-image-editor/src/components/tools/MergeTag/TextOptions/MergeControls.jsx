@@ -138,6 +138,17 @@ const TextControls = ({ text, saveText, children }) => {
         size="sm"
         placeholder={t('Variable name')}
       />
+
+      <StyledFontSizeInput
+        className="FIE_text-size-option"
+        value={text.text || ''}
+        name="text"
+        onChange={changeTextProps}
+        inputMode="alphanumeric"
+        type="text"
+        size="sm"
+        placeholder={t('Fallback Value')}
+      />    
       {Array.isArray(fonts) && fonts.length > 1 && (
         <StyledFontFamilySelect
           className="FIE_text-font-family-option"
