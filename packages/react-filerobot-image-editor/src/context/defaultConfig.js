@@ -38,7 +38,6 @@ export default {
     onFontChange: undefined,
   },
   [TOOLS_IDS.MERGETAG]: {
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     fontFamily: 'Arial',
     fonts: [
       { label: 'Arial', value: 'Arial' },
