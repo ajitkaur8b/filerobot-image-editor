@@ -1,5 +1,5 @@
 /** External Dependencies */
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import MenuItem from '@scaleflex/ui/core/menu-item';
 import FontBold from '@scaleflex/icons/font-bold';
@@ -25,12 +25,59 @@ import {
   activateTextChange,
   deactivateTextChange,
 } from './handleTextChangeArea';
-
+import axios from 'axios';
 const TextControls = ({ text, saveText, children }) => {
   const { dispatch, textIdOfEditableContent, designLayer, t, config } =
     useStore();
   const { useCloudimage } = config;
-  const { fonts = [], onFontChange } = config[TOOLS_IDS.TEXT];
+  //const { fonts = [], onFontChange } = config[TOOLS_IDS.TEXT];
+  const { fonts: defaultFonts = [], onFontChange } = config[TOOLS_IDS.MERGETAG];
+  const [showForm, setShowForm] = useState(false);
+  // State for managing fonts
+  const [fonts, setFonts] = useState(defaultFonts);
+    // State for managing custom font upload
+  const [customFontName, setCustomFontName] = useState('');
+  const fileInput = document.getElementById('fileInput');
+  const toggleForm = () => {
+    setShowForm(!showForm);
+    // Optionally, reset form state if needed when toggling visibility
+    if (!showForm) {
+      setCustomFontName('');
+      fileInput.value = '';
+    }
+  };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const file = fileInput.files[0];
+    if (customFontName && file) {
+      try {
+        const formData = new FormData();
+        formData.append('fontFile', file);
+        formData.append('fontName', customFontName);
+
+        // Example: Upload font to backend
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/uploadFont`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        if (response.status === 201) {
+          // Update state with the new font
+          const newFont = { label: customFontName, value: customFontName };
+          setFonts(prevFonts => [...prevFonts, newFont]);
+          setCustomFontName('');
+          fileInput.value = '';
+          setShowForm(false);
+        } else {
+          console.error('Failed to upload font:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error uploading font:', error);
+      }
+    } else {
+      alert('Please provide both font name and file.');
+    }
+  };
 
   const changeTextProps = useCallback(
     (e) => {
@@ -157,7 +204,21 @@ const TextControls = ({ text, saveText, children }) => {
         size="sm"
         placeholder={t('size')}
       />
+      {showForm && (
+        <form className='FIE_custom-font-div'>
+                <input type='text' className='FIE_text-font-name' value={customFontName} onChange={(e) => setCustomFontName(e.target.value)}  placeholder='Font Name' />
 
+          <input
+            type="file"
+            id="fileInput"
+            accept=".ttf,.otf,.woff,.woff2"
+            className='FIE_text-font-file'
+            onChange={handleSubmit}
+          />
+        {/* <button type="submit" className="FIE_button-add-font" title="Add Custom font..">+ Add Font</button> */}
+        </form>
+      )}
+      <button  onClick={toggleForm} className='FIE_button-add-font' title="Add Custom font..">+ Add Font</button>
       <StyledToolsWrapper>
         {!useCloudimage && (
           <>
