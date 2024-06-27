@@ -32,7 +32,7 @@ const TextControls = ({ text, saveText, children }) => {
   const { useCloudimage } = config;
   //const { fonts = [], onFontChange } = config[TOOLS_IDS.MERGETAG];
   const { fonts: defaultFonts = [], onFontChange } = config[TOOLS_IDS.MERGETAG];
-
+  const [showForm, setShowForm] = useState(false);
   // State for managing fonts
   const [fonts, setFonts] = useState(defaultFonts);
     // State for managing custom font upload
