@@ -37,23 +37,21 @@ const TextControls = ({ text, saveText, children }) => {
   // State for managing fonts
   const [fonts, setFonts] = useState(defaultFonts);
     // State for managing custom font upload
-  const fileInput = document.getElementById('fileInput');
+  
   const toggleForm = () => {
     setShowForm(!showForm);
-    // Optionally, reset form state if needed when toggling visibility
-    if (!showForm) {
-      fileInput.value = '';
-    }
+    
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const fileInput = document.getElementById('fileInput');
     const file = fileInput.files[0];
+    const fontName = file.name.replace(/\.[^/.]+$/, ''); // Extract font name
     if (file) {
       try {
         const reader = new FileReader();
         reader.onload = function(event) {
           const fontData = event.target.result;
-          const fontName = file.name.replace(/\.[^/.]+$/, ''); // Extract font name
 
           // Prepare the @font-face rule
           const fontFaceRule = `
@@ -80,10 +78,10 @@ const TextControls = ({ text, saveText, children }) => {
         });
         if (response.status === 201) {
           // Update state with the new font
-          const newFont = { label: customFontName, value: customFontName };
+          const newFont = { label: fontName, value: fontName };
           setFonts(prevFonts => [...prevFonts, newFont]);
           //setCustomFontName('');
-          fileInput.value = '';
+          //fileInput.value = '';
           setShowForm(false);
         } else {
           console.error('Failed to upload font:', response.statusText);
