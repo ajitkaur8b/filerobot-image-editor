@@ -84,10 +84,14 @@ const TextControls = ({ text, saveText, children }) => {
           //fileInput.value = '';
           setShowForm(false);
         } else {
-          console.error('Failed to upload font:', response.statusText);
+          console.error('Failed to upload font:', response);
+          setShowForm(false);
+          alert(response.data.error);
         }
       } catch (error) {
         console.error('Error uploading font:', error);
+        setShowForm(false);
+        alert(error);
       }
     } else {
       alert('Please provide file.');
