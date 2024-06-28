@@ -36,24 +36,40 @@ const TextControls = ({ text, saveText, children }) => {
   // State for managing fonts
   const [fonts, setFonts] = useState(defaultFonts);
     // State for managing custom font upload
-  const [customFontName, setCustomFontName] = useState('');
   const fileInput = document.getElementById('fileInput');
   const toggleForm = () => {
     setShowForm(!showForm);
     // Optionally, reset form state if needed when toggling visibility
     if (!showForm) {
-      setCustomFontName('');
       fileInput.value = '';
     }
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
     const file = fileInput.files[0];
-    if (customFontName && file) {
+    if (file) {
       try {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const fontData = event.target.result;
+          const fontName = file.name.replace(/\.[^/.]+$/, ''); // Extract font name
+
+          // Prepare the @font-face rule
+          const fontFaceRule = `
+            @font-face {
+              font-family: '${fontName}';
+            src: url('${fontData}');
+          }
+          `;
+
+          // Create a style element and append @font-face rule
+          const style = document.createElement('style');
+          style.appendChild(document.createTextNode(fontFaceRule));
+          document.head.appendChild(style);
+        };
+        reader.readAsDataURL(file);
         const formData = new FormData();
         formData.append('fontFile', file);
-        formData.append('fontName', customFontName);
 
         // Example: Upload font to backend
         const response = await axios.post(`${process.env.REACT_APP_API_URL}/uploadFont`, formData, {
@@ -65,7 +81,7 @@ const TextControls = ({ text, saveText, children }) => {
           // Update state with the new font
           const newFont = { label: customFontName, value: customFontName };
           setFonts(prevFonts => [...prevFonts, newFont]);
-          setCustomFontName('');
+          //setCustomFontName('');
           fileInput.value = '';
           setShowForm(false);
         } else {
@@ -75,7 +91,7 @@ const TextControls = ({ text, saveText, children }) => {
         console.error('Error uploading font:', error);
       }
     } else {
-      alert('Please provide both font name and file.');
+      alert('Please provide file.');
     }
   };
   const changeTextProps = useCallback(
@@ -227,7 +243,7 @@ const TextControls = ({ text, saveText, children }) => {
       />
       {showForm && (
         <form className='FIE_custom-font-div'>
-                <input type='text' className='FIE_text-font-name' value={customFontName} onChange={(e) => setCustomFontName(e.target.value)}  placeholder='Font Name' />
+                {/* <input type='text' className='FIE_text-font-name' value={customFontName} onChange={(e) => setCustomFontName(e.target.value)}  placeholder='Font Name' /> */}
 
           <input
             type="file"
