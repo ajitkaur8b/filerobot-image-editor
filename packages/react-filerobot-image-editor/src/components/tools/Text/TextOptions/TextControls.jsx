@@ -230,7 +230,7 @@ const TextControls = ({ text, saveText, children }) => {
           <input
             type="file"
             id="fileInput"
-            accept=".ttf,.otf,.woff,.woff2"
+            accept=".ttf,.otf"
             className='FIE_text-font-file'
             onChange={handleSubmit}
           />
