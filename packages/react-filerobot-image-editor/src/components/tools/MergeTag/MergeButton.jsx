@@ -11,7 +11,7 @@ const MergeButton = ({ selectTool, isSelected, t }) => (
   <ToolsBarItemButton
     className="FIE_text-tool-button"
     id={TOOLS_IDS.MERGETAG}
-    label={"MergeTags"}
+    label={"MergeFields"}
     Icon={TextIcon}
     onClick={selectTool}
     isSelected={isSelected}
