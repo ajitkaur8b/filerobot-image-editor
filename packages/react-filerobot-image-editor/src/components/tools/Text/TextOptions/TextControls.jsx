@@ -27,6 +27,7 @@ import {
   deactivateTextChange,
 } from './handleTextChangeArea';
 import axios from 'axios';
+
 const TextControls = ({ text, saveText, children }) => {
   const { dispatch, textIdOfEditableContent, designLayer, t, config } =
     useStore();
@@ -34,42 +35,27 @@ const TextControls = ({ text, saveText, children }) => {
   //const { fonts = [], onFontChange } = config[TOOLS_IDS.TEXT];
   const { fonts: defaultFonts = [], onFontChange } = config[TOOLS_IDS.MERGETAG];
   const [showForm, setShowForm] = useState(false);
+  const [customFontName, setCustomFontName] = useState('');
   // State for managing fonts
   const [fonts, setFonts] = useState(defaultFonts);
     // State for managing custom font upload
   
   const toggleForm = () => {
     setShowForm(!showForm);
-    
+    if (!showForm) {
+      setCustomFontName('');
+    }
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
     const fileInput = document.getElementById('fileInput');
     const file = fileInput.files[0];
     const fontName = file.name.replace(/\.[^/.]+$/, ''); // Extract font name
-    if (file) {
+    if (customFontName && file) {
       try {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-          const fontData = event.target.result;
-
-          // Prepare the @font-face rule
-          const fontFaceRule = `
-            @font-face {
-              font-family: '${fontName}';
-            src: url('${fontData}');
-          }
-          `;
-
-          // Create a style element and append @font-face rule
-          const style = document.createElement('style');
-          style.appendChild(document.createTextNode(fontFaceRule));
-          document.head.appendChild(style);
-        };
-        reader.readAsDataURL(file);
         const formData = new FormData();
         formData.append('fontFile', file);
-
+        formData.append('fontName', customFontName);
         // Example: Upload font to backend
         const response = await axios.post(`${process.env.REACT_APP_API_URL}/uploadFont`, formData, {
           headers: {
@@ -77,10 +63,27 @@ const TextControls = ({ text, saveText, children }) => {
           },
         });
         if (response.status === 201) {
+          const reader = new FileReader();
+          reader.onload = function(event) {
+            const fontData = event.target.result;
+            // Prepare the @font-face rule
+            const fontFaceRule = `
+              @font-face {
+                font-family: '${response.data.fontFamily}';
+                src: url('${fontData}');
+            }
+            `;
+
+            // Create a style element and append @font-face rule
+            const style = document.createElement('style');
+            style.appendChild(document.createTextNode(fontFaceRule));
+            document.head.appendChild(style);
+          };
+          reader.readAsDataURL(file);
           // Update state with the new font
-          const newFont = { label: fontName, value: fontName };
+          const newFont = { label: fontName, value: response.data.fontFamily };
           setFonts(prevFonts => [...prevFonts, newFont]);
-          //setCustomFontName('');
+          setCustomFontName('');
           //fileInput.value = '';
           setShowForm(false);
         } else {
@@ -94,7 +97,7 @@ const TextControls = ({ text, saveText, children }) => {
         alert(error);
       }
     } else {
-      alert('Please provide file.');
+      alert('Please provide both font name and file.');
     }
   };
 
@@ -225,7 +228,7 @@ const TextControls = ({ text, saveText, children }) => {
       />
       {showForm && (
         <form className='FIE_custom-font-div'>
-                {/* <input type='text' className='FIE_text-font-name' value={customFontName} onChange={(e) => setCustomFontName(e.target.value)}  placeholder='Font Name' /> */}
+          <input type='text' className='FIE_text-font-name' value={customFontName} onChange={(e) => setCustomFontName(e.target.value)}  placeholder='Font Name' />
 
           <input
             type="file"

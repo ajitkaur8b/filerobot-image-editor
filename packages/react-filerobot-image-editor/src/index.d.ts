@@ -29,7 +29,7 @@ declare const TOOLS = {
   ELLIPSE: 'Ellipse',
   POLYGON: 'Polygon',
   TEXT: 'Text',
-  MERGETAG: 'MergeTag',
+  MERGETAG: 'MergeField',
   LINE: 'Line',
   IMAGE: 'Image',
   ARROW: 'Arrow',
