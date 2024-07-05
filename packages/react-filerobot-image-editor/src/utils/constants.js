@@ -38,7 +38,7 @@ export const TOOLS_IDS = {
   // ELLIPSE: 'Ellipse',
   // POLYGON: 'Polygon',
   TEXT: 'Text',
-  MERGETAG: 'MergeField',
+  MERGETAG: 'MergeTag',
   // LINE: 'Line',
   IMAGE: 'Image',
   // ARROW: 'Arrow',
