@@ -97,7 +97,7 @@ const ToolsBar = ({ isPhoneScreen }) => {
   }, []);
 
   return (
-    <StyledToolsBar className="FIE_tools-bar-wrapper">
+    <StyledToolsBar className="FIE_tools-bar-wrapper smart-images-tools">
       <ToolsBarItemOptionsWrapper isPhoneScreen={isPhoneScreen}>
         {ToolOptionsComponent && <ToolOptionsComponent t={t} />}
       </ToolsBarItemOptionsWrapper>
