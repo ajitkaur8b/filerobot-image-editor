@@ -9,7 +9,7 @@ import { TOOLS_IDS } from 'utils/constants';
 
 const MergeButton = ({ selectTool, isSelected, t }) => (
   <ToolsBarItemButton
-    className="FIE_text-tool-button"
+    className="FIE_text-tool-button FIE_merge-tag-tool-button"
     id={TOOLS_IDS.MERGETAG}
     label={"MergeFields"}
     Icon={TextIcon}

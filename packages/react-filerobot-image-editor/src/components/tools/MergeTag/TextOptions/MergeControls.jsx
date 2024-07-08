@@ -25,6 +25,7 @@ import {
   activateTextChange,
   deactivateTextChange,
 } from './handleTextChangeArea';
+import axios from 'axios';
 const TextControls = ({ text, saveText, children }) => {
   const { dispatch, textIdOfEditableContent, designLayer, t, config } =
     useStore();
