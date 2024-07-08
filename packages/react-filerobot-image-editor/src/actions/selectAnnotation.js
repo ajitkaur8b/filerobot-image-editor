@@ -1,7 +1,6 @@
 export const SELECT_ANNOTATION = 'SELECT_ANNOTATION';
 
 const selectAnnotation = (state, payload) => {
-  console.log(payload,'state', state);
   if (
     state.selectionsIds.length === 1 &&
     state.selectionsIds[0] === payload.annotationId
