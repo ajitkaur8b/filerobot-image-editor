@@ -1,6 +1,7 @@
 import randomId from 'utils/randomId';
 
 export const SET_ANNOTATION = 'SET_ANNOTATION';
+export const SET_ANNOTATIONS = 'SET_ANNOTATIONS';
 
 const setAnnotation = (state, payload = {}) => {
   // dismissHistory is used to prevent considering this change in history (undo/redo).
@@ -35,6 +36,16 @@ const setAnnotation = (state, payload = {}) => {
       },
     },
   };
+};
+
+export const setAnnotations = (state, payload = []) => {
+  const updatedAnnotations = {};
+  payload.forEach((annotation) => {
+    updatedAnnotations[annotation.id] = annotation;
+  });
+  state.annotations = updatedAnnotations
+
+  return state;
 };
 
 export default setAnnotation;
