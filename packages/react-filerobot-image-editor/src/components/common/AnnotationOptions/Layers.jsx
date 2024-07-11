@@ -1,6 +1,6 @@
 /** External Dependencies */
-import React, { useState } from 'react';
-import { SELECT_ANNOTATION, SELECT_TOOL } from 'actions';
+import React, { useEffect, useState } from 'react';
+import { SELECT_ANNOTATION, SELECT_TOOL, SET_ANNOTATIONS } from 'actions';
 import { useDrag, useDrop, DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
@@ -56,10 +56,12 @@ const LayerItem = ({ annotation, index, moveCard, setOn }) => {
 };
 
 const Layers = () => {
-  const { annotations = {}, selectionsIds = [], dispatch } = useStore();
+  const { annotations = {}, dispatch } = useStore();
   const [annotationss, setAnnotations] = useState(Object.values(annotations));
-  const annotationEvents = useAnnotationEvents();
 
+  useEffect(() => {
+    console.log("Inside useEffect ->", annotations)
+  }, [annotations])
   const setOn = (id, name) => {
     const multiple = false;
 
@@ -85,6 +87,10 @@ const Layers = () => {
     const [movedItem] = updatedAnnotations.splice(fromIndex, 1);
     updatedAnnotations.splice(toIndex, 0, movedItem);
     setAnnotations(updatedAnnotations);
+    dispatch({
+      type: SET_ANNOTATIONS,
+      payload: updatedAnnotations,
+    });
   };
 
   return (

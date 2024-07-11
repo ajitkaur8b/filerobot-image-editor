@@ -7,7 +7,7 @@ import showLoader, { SHOW_LOADER } from './showLoader';
 import selectTab, { SELECT_TAB } from './selectTab';
 import undo, { UNDO } from './undo';
 import setFinetune, { SET_FINETUNE } from './setFinetune';
-import setAnnotation, { SET_ANNOTATION } from './setAnnotation';
+import setAnnotation, { SET_ANNOTATION, SET_ANNOTATIONS, setAnnotations } from './setAnnotation';
 import changePointerIcon, { CHANGE_POINTER_ICON } from './changePointerIcon';
 import selectAnnotation, { SELECT_ANNOTATION } from './selectAnnotation';
 import clearAnnotationsSelections, {
@@ -60,6 +60,7 @@ export default {
   [ADD_FILTER]: addFilter,
   [SET_FINETUNE]: setFinetune,
   [SET_ANNOTATION]: setAnnotation,
+  [SET_ANNOTATIONS]: setAnnotations,
   [SET_CROP]: setCrop,
   [CHANGE_ROTATION]: changeRotation,
   [TOGGLE_FLIP]: toggleFlip,
@@ -95,6 +96,7 @@ export {
   ADD_FILTER,
   SET_FINETUNE,
   SET_ANNOTATION,
+  SET_ANNOTATIONS,
   SET_CROP,
   CHANGE_ROTATION,
   TOGGLE_FLIP,
