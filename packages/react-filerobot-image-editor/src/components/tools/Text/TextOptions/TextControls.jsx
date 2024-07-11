@@ -81,7 +81,7 @@ const TextControls = ({ text, saveText, children }) => {
           };
           reader.readAsDataURL(file);
           // Update state with the new font
-          const newFont = { label: fontName, value: response.data.fontFamily };
+          const newFont = { label: customFontName, value: response.data.fontFamily };
           setFonts(prevFonts => [...prevFonts, newFont]);
           setCustomFontName('');
           //fileInput.value = '';
