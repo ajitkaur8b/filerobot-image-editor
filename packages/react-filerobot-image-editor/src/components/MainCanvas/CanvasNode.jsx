@@ -9,7 +9,7 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import Konva from 'konva';
-import { useStrictMode } from 'react-konva';
+import { useStrictMode , Layer } from 'react-konva';
 
 /** Internal Dependencies */
 import {
@@ -26,7 +26,6 @@ import {
 import { useStore } from 'hooks';
 import { endTouchesZooming, zoomOnTouchesMove } from './touchZoomingEvents';
 import { StyledCanvasNode } from './MainCanvas.styled';
-
 const ZOOM_DELTA_TO_SCALE_CONVERT_FACTOR = 0.006;
 
 const CanvasNode = ({ children }) => {
@@ -47,6 +46,10 @@ const CanvasNode = ({ children }) => {
   Konva.pixelRatio = previewPixelRatio;
   const defaultZoomFactor = DEFAULT_ZOOM_FACTOR;
   const isZoomEnabled = !disableZooming && toolId !== TOOLS_IDS.CROP;
+  const snapSettings = {
+    snapGrid: 20, // Adjust for grid snapping if needed
+  };
+
   const [isPanningEnabled, setIsPanningEnabled] = useState(
     tabId !== TABS_IDS.ANNOTATE &&
       tabId !== TABS_IDS.WATERMARK &&
@@ -77,10 +80,16 @@ const CanvasNode = ({ children }) => {
       isZoomEnabled &&
       isPanningEnabled
     ) {
+      let { x, y } = e.target.position();
+
+      // Snap logic here
+      x = Math.round(x / snapSettings.snapGrid) * snapSettings.snapGrid;
+      y = Math.round(y / snapSettings.snapGrid) * snapSettings.snapGrid;
+
       saveZoom({
         factor: zoom.factor,
-        x: e.target.x(),
-        y: e.target.y(),
+        x,
+        y,
         preparedDimensions: true,
       });
     }
@@ -101,8 +110,13 @@ const CanvasNode = ({ children }) => {
   );
 
   const dragBoundFunc = (pos) => {
-    const x = Math.min(0, Math.max(pos.x, canvasWidth * (1 - zoom.factor)));
-    const y = Math.min(0, Math.max(pos.y, canvasHeight * (1 - zoom.factor)));
+    let { x, y } = pos;
+    if (snapSettings.snapGrid) {
+      x = Math.round(x / snapSettings.snapGrid) * snapSettings.snapGrid;
+      y = Math.round(y / snapSettings.snapGrid) * snapSettings.snapGrid;
+    } 
+    x = Math.min(0, Math.max(x, canvasWidth * (1 - zoom.factor)));
+    y = Math.min(0, Math.max(y, canvasHeight * (1 - zoom.factor)));
 
     return {
       x,
@@ -208,6 +222,8 @@ const CanvasNode = ({ children }) => {
   // it's done by toggling panning through mouse right click (enable/disable) then drag mouse.
   const zoomedResponsiveCanvasScale =
     canvasScale * ((isZoomEnabled && zoom.factor) || defaultZoomFactor);
+
+
   return (
     <StyledCanvasNode
       className="FIE_canvas-node"
@@ -233,7 +249,7 @@ const CanvasNode = ({ children }) => {
       onDragEnd={handleCanvasDragEnd}
       style={cursorStyle}
     >
-      {children}
+            {children}
     </StyledCanvasNode>
   );
 };
