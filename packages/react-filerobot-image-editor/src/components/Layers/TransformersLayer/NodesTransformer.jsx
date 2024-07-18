@@ -38,7 +38,7 @@ const NodesTransformer = () => {
   );
   // const canvasWidth = originalImage.width;
   // const canvasHeight = originalImage.height;
-  const CANVAS_TO_IMG_SPACING = 5;//getProperImageToCanvasSpacing();
+  const CANVAS_TO_IMG_SPACING = getProperImageToCanvasSpacing();
   console.log('CANVAS_TO_IMG_SPACING', CANVAS_TO_IMG_SPACING);
   const changePointerIconToMove = () => {
     dispatch({
@@ -88,7 +88,7 @@ const NodesTransformer = () => {
     if (!stage) return;
     const selectedNode = getNodeById(selectionsIds[0]);
     //console.log('selectedNode', selectedNode);
-    const lineGuideStops = getLineGuideStops(selectedNode,stage); // Pass canvas dimensions
+    const lineGuideStops = getLineGuideStops(selectedNode,stage,designLayer); // Pass canvas dimensions
     const itemBounds = getObjectSnappingEdges(selectedNode); // Pass canvas dimensions
     const calculatedGuides = getGuides(lineGuideStops, itemBounds);
     setGuides(calculatedGuides);
@@ -115,11 +115,14 @@ const NodesTransformer = () => {
     setGuides([]);
   }, []);
 
-  const getLineGuideStops = useCallback((skipShape, stage) => {
-    let vertical = [0, stage.width()/ 2, stage.width()];
-    let horizontal = [0, stage.height()/ 2, stage.height()];
+  const getLineGuideStops = useCallback((skipShape, stage, designLayer) => {
+    // Get the dimensions of the canvas
+    //console.log('designLayer', designLayer.children[0].attrs.width, designLayer.children[0].attrs.height);
+    //console.log('stage', stage.width(), stage.height());
+    let vertical = [0, designLayer.children[0].attrs.width/ 2, designLayer.children[0].attrs.width];
+    let horizontal = [0, designLayer.children[0].attrs.height/ 2, designLayer.children[0].attrs.height];
     // Iterate through all objects on the canvas (assuming they have class name 'object')
-    stage.find('.Text, .Rect, .MergeTag, .Image').forEach((guideItem) => {
+    designLayer.find('.Text, .Rect, .MergeTag, .Image').forEach((guideItem) => {
       if (guideItem === skipShape) {
         return;
       }

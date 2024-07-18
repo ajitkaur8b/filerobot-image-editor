@@ -31,7 +31,7 @@ const StyledAppWrapper = styled.div.attrs(({ $size = {} }) => ({
 const StyledMainContent = styled.div`
   display: flex;
   align-items: flex-start;
-  width: 100%;
+  width: 70%;
   box-sizing: border-box;
   height: calc(100% - 95px); // 95px = possible max height of topbar w/ spaces
   flex-grow: 1;
