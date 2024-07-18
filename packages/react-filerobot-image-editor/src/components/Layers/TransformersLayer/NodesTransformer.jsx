@@ -17,16 +17,9 @@ const NodesTransformer = () => {
     theme,
     designLayer,
     dispatch,
-    originalImage = {},
-    initialCanvasWidth,
-    initialCanvasHeight,
-    toolId,
     config: { useCloudimage },
   } = useStore();
-  const [draggedItem, setDraggedItem] = useState(null);
   const [guides, setGuides] = useState([]);
-  
-
   const selections = useMemo(
     () =>
       designLayer?.findOne
@@ -36,10 +29,8 @@ const NodesTransformer = () => {
         : [],
     [selectionsIds],
   );
-  // const canvasWidth = originalImage.width;
-  // const canvasHeight = originalImage.height;
+ 
   const CANVAS_TO_IMG_SPACING = getProperImageToCanvasSpacing();
-  console.log('CANVAS_TO_IMG_SPACING', CANVAS_TO_IMG_SPACING);
   const changePointerIconToMove = () => {
     dispatch({
       type: CHANGE_POINTER_ICON,
@@ -78,7 +69,6 @@ const NodesTransformer = () => {
   const getNodeById = useCallback((id) => {
     if (!designLayer) return null; // Ensure designLayer is defined
   
-    // Find the node in designLayer children that matches the id
     const node = designLayer.children.find(child => child.id() === id);
     return node || null; // Return the found node or null if not found
   }, [designLayer]);
@@ -87,7 +77,6 @@ const NodesTransformer = () => {
     const stage = shape.getStage();
     if (!stage) return;
     const selectedNode = getNodeById(selectionsIds[0]);
-    //console.log('selectedNode', selectedNode);
     const lineGuideStops = getLineGuideStops(selectedNode,stage,designLayer); // Pass canvas dimensions
     const itemBounds = getObjectSnappingEdges(selectedNode); // Pass canvas dimensions
     const calculatedGuides = getGuides(lineGuideStops, itemBounds);
@@ -116,26 +105,17 @@ const NodesTransformer = () => {
   }, []);
 
   const getLineGuideStops = useCallback((skipShape, stage, designLayer) => {
-    // Get the dimensions of the canvas
-    //console.log('designLayer', designLayer.children[0].attrs.width, designLayer.children[0].attrs.height);
-    //console.log('stage', stage.width(), stage.height());
     let vertical = [0, designLayer.children[0].attrs.width/ 2, designLayer.children[0].attrs.width];
     let horizontal = [0, designLayer.children[0].attrs.height/ 2, designLayer.children[0].attrs.height];
-    // Iterate through all objects on the canvas (assuming they have class name 'object')
     designLayer.find('.Text, .Rect, .MergeTag, .Image').forEach((guideItem) => {
       if (guideItem === skipShape) {
         return;
       }
-      //if (guideItem.getClassName() === 'Text' || guideItem.getClassName() === 'MergeTag' || guideItem.getClassName() === 'Rect' || guideItem.getClassName() === 'Image') {
-        const box = guideItem.getClientRect();
-        // Push snap points for vertical edges and center of the object
-        vertical.push([box.x, box.x + box.width, box.x + box.width / 2]);
-        // Push snap points for horizontal edges and center of the object
-        horizontal.push([box.y, box.y + box.height, box.y + box.height / 2]);
-      //} 
+      const box = guideItem.getClientRect();
+      vertical.push([box.x, box.x + box.width, box.x + box.width / 2]);
+      horizontal.push([box.y, box.y + box.height, box.y + box.height / 2]);
       
     });
-    // Flatten arrays to get final snap points
     return {
       vertical: vertical.flat(),
       horizontal: horizontal.flat(),
@@ -240,8 +220,6 @@ const NodesTransformer = () => {
     return guides;
   }, []);
   
-  // ALT is used to center scaling
-  // SHIFT is used to scaling with keeping ratio
   return (
     <>
         {/* Render horizontal guides */}
