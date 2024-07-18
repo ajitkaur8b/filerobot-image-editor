@@ -9,15 +9,10 @@ import { useResizeObserver, useStore } from 'hooks';
 import NodeControls from 'components/NodeControls';
 import CanvasNode from './CanvasNode';
 import { CanvasContainer, StyledOrignalImage } from './MainCanvas.styled';
-import { Layer } from 'react-konva';
-import GridLayer from './GridLayer';
 const MainCanvas = () => {
   const [observeResize] = useResizeObserver();
   const providedAppContext = useStore();
   const canvasContainerRef = useRef(null);
-  const snapSettings = {
-    snapGrid: 160, // Adjust for grid snapping if needed
-  };
   const setNewCanvasSize = useCallback(
     ({ width: containerWidth, height: containerHeight }) => {
       providedAppContext.dispatch({
@@ -48,13 +43,6 @@ const MainCanvas = () => {
         <AppProviderOverridenValue overridingValue={providedAppContext}>
           <DesignLayer />
           <TransformersLayer />
-          <Layer>
-          <GridLayer
-            width={providedAppContext.initialCanvasWidth}
-            height={providedAppContext.initialCanvasHeight}
-            gridSize={snapSettings.snapGrid}
-          />
-        </Layer>  
         </AppProviderOverridenValue>
       </CanvasNode>
     </CanvasContainer>
