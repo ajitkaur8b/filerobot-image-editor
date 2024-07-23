@@ -30,7 +30,7 @@ const NodesTransformer = () => {
     [selectionsIds],
   );
  
-  const CANVAS_TO_IMG_SPACING = getProperImageToCanvasSpacing();
+  const CANVAS_TO_IMG_SPACING = 5;//getProperImageToCanvasSpacing();
   const changePointerIconToMove = () => {
     dispatch({
       type: CHANGE_POINTER_ICON,
@@ -65,7 +65,7 @@ const NodesTransformer = () => {
   const enabledAnchors = useCloudimage
     ? ['top-left', 'bottom-left', 'top-right', 'bottom-right']
     : undefined;
-
+  
   const getNodeById = useCallback((id) => {
     if (!designLayer) return null; // Ensure designLayer is defined
   
@@ -104,17 +104,21 @@ const NodesTransformer = () => {
     setGuides([]);
   }, []);
 
-  const getLineGuideStops = useCallback((skipShape, stage, designLayer) => {
-    let vertical = [0, designLayer.children[0].attrs.width/ 2, designLayer.children[0].attrs.width];
-    let horizontal = [0, designLayer.children[0].attrs.height/ 2, designLayer.children[0].attrs.height];
+  const getLineGuideStops = useCallback((skipShape,stage, designLayer) => {
+    console.log('designLayer', stage.width(), stage.height());
+    let vertical = [0, designLayer.width() / 2, designLayer.width()];
+    let horizontal = [0, designLayer.height() / 2, designLayer.height()];
     designLayer.find('.Text, .Rect, .MergeTag, .Image').forEach((guideItem) => {
       if (guideItem === skipShape) {
-        return;
-      }
-      const box = guideItem.getClientRect();
+         return;
+      }       
+      const box = guideItem.attrs;
       vertical.push([box.x, box.x + box.width, box.x + box.width / 2]);
       horizontal.push([box.y, box.y + box.height, box.y + box.height / 2]);
-      
+      if(guideItem.name() === 'Text' || guideItem.name() === 'MergeTag'){
+        vertical.push([box.x, box.x + box.textWidth, box.x + box.textWidth / 2]);
+        horizontal.push([box.y, box.y + box.textHeight, box.y + box.textHeight / 2]);
+      }
     });
     return {
       vertical: vertical.flat(),
@@ -123,9 +127,9 @@ const NodesTransformer = () => {
   }, []);
 
   const getObjectSnappingEdges = useCallback((node) => {
-    var box = node.getClientRect();
+    var box = node.attrs;
     var absPos = node.absolutePosition();
-
+    //console.log('absPos', absPos);
     return {
       vertical: [
         {
@@ -165,12 +169,13 @@ const NodesTransformer = () => {
   }, []);
 
   const getGuides = useCallback((lineGuideStops, itemBounds) => {
-    var resultV = [];
-    var resultH = [];
+    let resultV = [];
+    let resultH = [];
+  
+    // Collect vertical and horizontal snapping candidates
     lineGuideStops.vertical.forEach((lineGuide) => {
       itemBounds.vertical.forEach((itemBound) => {
-        var diff = Math.abs(lineGuide - itemBound.guide);
-        // if the distance between guild line and object snap point is close we can consider this for snapping
+        let diff = Math.abs(lineGuide - itemBound.guide);
         if (diff < CANVAS_TO_IMG_SPACING) {
           resultV.push({
             lineGuide: lineGuide,
@@ -181,10 +186,10 @@ const NodesTransformer = () => {
         }
       });
     });
-
+  
     lineGuideStops.horizontal.forEach((lineGuide) => {
       itemBounds.horizontal.forEach((itemBound) => {
-        var diff = Math.abs(lineGuide - itemBound.guide);
+        let diff = Math.abs(lineGuide - itemBound.guide);
         if (diff < CANVAS_TO_IMG_SPACING) {
           resultH.push({
             lineGuide: lineGuide,
@@ -195,12 +200,13 @@ const NodesTransformer = () => {
         }
       });
     });
-
-    var guides = [];
-
-    // find closest snap
-    var minV = resultV.sort((a, b) => a.diff - b.diff)[0];
-    var minH = resultH.sort((a, b) => a.diff - b.diff)[0];
+  
+    let guides = [];
+    
+    // Find closest snap
+    let minV = resultV.sort((a, b) => a.diff - b.diff)[0];
+    let minH = resultH.sort((a, b) => a.diff - b.diff)[0];
+    
     if (minV) {
       guides.push({
         lineGuide: minV.lineGuide,
@@ -209,6 +215,7 @@ const NodesTransformer = () => {
         snap: minV.snap,
       });
     }
+
     if (minH) {
       guides.push({
         lineGuide: minH.lineGuide,
@@ -217,13 +224,16 @@ const NodesTransformer = () => {
         snap: minH.snap,
       });
     }
+  
     return guides;
   }, []);
+  
   
   return (
     <>
         {/* Render horizontal guides */}
         {guides.map((guide, index) => (
+          //console.log(guide),
           <Line
             key={`guide-${index}`}
             points={
@@ -236,6 +246,7 @@ const NodesTransformer = () => {
             dash={[5, 6]}
             x={guide.orientation === 'H' ? 0 : guide.lineGuide}
             y={guide.orientation === 'H' ? guide.lineGuide : 0}
+
           />
         ))}
     <Transformer
