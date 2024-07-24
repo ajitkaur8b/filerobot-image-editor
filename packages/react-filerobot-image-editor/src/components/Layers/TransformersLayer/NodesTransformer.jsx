@@ -30,7 +30,7 @@ const NodesTransformer = () => {
     [selectionsIds],
   );
  
-  const CANVAS_TO_IMG_SPACING = 5;//getProperImageToCanvasSpacing();
+  const CANVAS_TO_IMG_SPACING = 3;//getProperImageToCanvasSpacing();
   const changePointerIconToMove = () => {
     dispatch({
       type: CHANGE_POINTER_ICON,
@@ -77,7 +77,7 @@ const NodesTransformer = () => {
     const stage = shape.getStage();
     if (!stage) return;
     const selectedNode = getNodeById(selectionsIds[0]);
-    const lineGuideStops = getLineGuideStops(selectedNode,stage,designLayer); // Pass canvas dimensions
+    const lineGuideStops = getLineGuideStops(selectedNode,designLayer); // Pass canvas dimensions
     const itemBounds = getObjectSnappingEdges(selectedNode); // Pass canvas dimensions
     const calculatedGuides = getGuides(lineGuideStops, itemBounds);
     setGuides(calculatedGuides);
@@ -104,8 +104,7 @@ const NodesTransformer = () => {
     setGuides([]);
   }, []);
 
-  const getLineGuideStops = useCallback((skipShape,stage, designLayer) => {
-    console.log('designLayer', stage.width(), stage.height());
+  const getLineGuideStops = useCallback((skipShape, designLayer) => {
     let vertical = [0, designLayer.width() / 2, designLayer.width()];
     let horizontal = [0, designLayer.height() / 2, designLayer.height()];
     designLayer.find('.Text, .Rect, .MergeTag, .Image').forEach((guideItem) => {
@@ -129,7 +128,6 @@ const NodesTransformer = () => {
   const getObjectSnappingEdges = useCallback((node) => {
     var box = node.attrs;
     var absPos = node.absolutePosition();
-    //console.log('absPos', absPos);
     return {
       vertical: [
         {

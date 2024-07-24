@@ -97,16 +97,19 @@ const CanvasNode = ({ children }) => {
 
   const clearSelections = useCallback(
     (e) => {
-      e.evt.preventDefault();
-      e.currentTarget.container?.().focus();
-
-      if (selectionsIds.length > 0) {
+      e.evt.preventDefault(); // Prevent default browser behavior
+  
+      // Access the Konva Stage from the event target
+      const clickedOnStage = e.target === e.currentTarget;
+      
+      // Check if the click was on the Konva Stage and selections exist
+      if (clickedOnStage && selectionsIds.length > 0) {
         dispatch({
           type: CLEAR_ANNOTATIONS_SELECTIONS,
         });
       }
     },
-    [selectionsIds],
+    [selectionsIds, dispatch]
   );
 
   const dragBoundFunc = (pos) => {
